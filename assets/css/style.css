@@ -605,3 +605,185 @@ p { margin: 0; }
   .event-gallery { grid-template-columns: 1fr; }
   .event-gallery img, .event-gallery img:first-child { grid-column: auto; height: 330px; }
 }
+
+/* =====================================================
+   GALERIA DE FOTOS — SEMANA DO BRINCAR
+===================================================== */
+
+.galeria-slider {
+  width: 100%;
+  margin: 0 0 2rem;
+}
+
+.slider-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #071b36;
+  box-shadow: 0 16px 40px rgba(7, 27, 54, 0.18);
+  touch-action: pan-y;
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+
+.slider-slide {
+  min-width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #071b36;
+}
+
+.slider-slide img {
+  display: block;
+  width: 100%;
+  height: clamp(320px, 58vw, 680px);
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Botões laterais */
+
+.slider-button {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(7, 27, 54, 0.78);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.slider-button:hover {
+  background: #c51f2d;
+  transform: translateY(-50%) scale(1.06);
+}
+
+.slider-button:focus-visible {
+  outline: 3px solid #f4c542;
+  outline-offset: 3px;
+}
+
+.slider-button--previous {
+  left: 16px;
+}
+
+.slider-button--next {
+  right: 16px;
+}
+
+/* Contador */
+
+.slider-counter {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 3;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.68);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+/* Indicadores inferiores */
+
+.slider-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.slider-dot {
+  width: 11px;
+  height: 11px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #b8bec8;
+  cursor: pointer;
+  transition:
+    width 0.25s ease,
+    border-radius 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.slider-dot:hover {
+  background: #7e8794;
+}
+
+.slider-dot.is-active {
+  width: 30px;
+  border-radius: 999px;
+  background: #c51f2d;
+}
+
+.slider-dot:focus-visible {
+  outline: 3px solid #f4c542;
+  outline-offset: 3px;
+}
+
+.slider-caption {
+  margin: 12px 0 0;
+  color: #657080;
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+/* Celular */
+
+@media (max-width: 640px) {
+  .slider-viewport {
+    border-radius: 12px;
+  }
+
+  .slider-slide img {
+    height: 430px;
+  }
+
+  .slider-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .slider-button--previous {
+    left: 8px;
+  }
+
+  .slider-button--next {
+    right: 8px;
+  }
+
+  .slider-counter {
+    right: 10px;
+    bottom: 10px;
+  }
+}
+
+/* Reduz animações para quem preferir */
+
+@media (prefers-reduced-motion: reduce) {
+  .slider-track {
+    transition: none;
+  }
+}
+

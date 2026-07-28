@@ -165,3 +165,144 @@
     el.textContent = String(new Date().getFullYear());
   });
 })();
+  document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.querySelector(".galeria-slider");
+
+    if (!slider) {
+      return;
+    }
+
+    const viewport = slider.querySelector(".slider-viewport");
+    const track = slider.querySelector(".slider-track");
+    const slides = Array.from(
+      slider.querySelectorAll(".slider-slide")
+    );
+
+    const previousButton = slider.querySelector(
+      ".slider-button--previous"
+    );
+
+    const nextButton = slider.querySelector(
+      ".slider-button--next"
+    );
+
+    const currentElement = slider.querySelector(
+      ".slider-current"
+    );
+
+    const totalElement = slider.querySelector(
+      ".slider-total"
+    );
+
+    const dotsContainer = slider.querySelector(
+      ".slider-dots"
+    );
+
+    let currentIndex = 0;
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    totalElement.textContent = slides.length;
+
+    /*
+     * Cria automaticamente um indicador
+     * para cada fotografia.
+     */
+    const dots = slides.map((slide, index) => {
+      const dot = document.createElement("button");
+
+      dot.type = "button";
+      dot.className = "slider-dot";
+      dot.setAttribute(
+        "aria-label",
+        `Mostrar foto ${index + 1}`
+      );
+
+      dot.addEventListener("click", () => {
+        showSlide(index);
+      });
+
+      dotsContainer.appendChild(dot);
+
+      return dot;
+    });
+
+    function showSlide(index) {
+      /*
+       * Ao chegar ao fim, volta para a primeira.
+       * Ao voltar antes da primeira, mostra a última.
+       */
+      currentIndex =
+        (index + slides.length) % slides.length;
+
+      track.style.transform =
+        `translateX(-${currentIndex * 100}%)`;
+
+      currentElement.textContent = currentIndex + 1;
+
+      dots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === currentIndex;
+
+        dot.classList.toggle("is-active", isActive);
+        dot.setAttribute(
+          "aria-current",
+          isActive ? "true" : "false"
+        );
+      });
+    }
+
+    previousButton.addEventListener("click", () => {
+      showSlide(currentIndex - 1);
+    });
+
+    nextButton.addEventListener("click", () => {
+      showSlide(currentIndex + 1);
+    });
+
+    /*
+     * Permite usar as setas do teclado.
+     */
+    slider.setAttribute("tabindex", "0");
+
+    slider.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        showSlide(currentIndex - 1);
+      }
+
+      if (event.key === "ArrowRight") {
+        showSlide(currentIndex + 1);
+      }
+    });
+
+    /*
+     * Permite arrastar para os lados no celular.
+     */
+    viewport.addEventListener(
+      "touchstart",
+      (event) => {
+        touchStartX = event.changedTouches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    viewport.addEventListener(
+      "touchend",
+      (event) => {
+        touchEndX = event.changedTouches[0].clientX;
+
+        const movement = touchStartX - touchEndX;
+        const minimumMovement = 50;
+
+        if (movement > minimumMovement) {
+          showSlide(currentIndex + 1);
+        }
+
+        if (movement < -minimumMovement) {
+          showSlide(currentIndex - 1);
+        }
+      },
+      { passive: true }
+    );
+
+    showSlide(0);
+  });
